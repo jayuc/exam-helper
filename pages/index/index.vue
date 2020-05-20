@@ -1,13 +1,20 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
+		<view class="h100"></view>
+		<view class="h80"></view>
+		<navigator url="../main/exam-main">
+			<button class="btn" type="primary">答 题</button>
+		</navigator>
+		<view class="h80"></view>
+		<navigator url="../main/subject-add">
+			<button class="btn" type="warn">题目录入</button>
+		</navigator>
 	</view>
 </template>
 
 <script>
+	import fsUtil from '@/utils/fsUtil.js';
+	
 	export default {
 		data() {
 			return {
@@ -15,7 +22,7 @@
 			}
 		},
 		onLoad() {
-
+			fsUtil.readJsonFile("/store/subject-type.json");
 		},
 		methods: {
 
@@ -31,22 +38,8 @@
 		justify-content: center;
 	}
 
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
+	.btn{
+		width: 300rpx;
 	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+	
 </style>

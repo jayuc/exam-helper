@@ -3,7 +3,19 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "考试宝典"
+			}
+		},
+		{
+			"path": "pages/main/exam-main",
+			"style": {
+				"navigationBarTitleText": "答题"
+			}
+		},
+		{
+			"path": "pages/main/subject-add",
+			"style": {
+				"navigationBarTitleText": "题目录入"
 			}
 		}
 	],

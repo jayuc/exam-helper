@@ -1,0 +1,124 @@
+
+.h5{
+	height: 5rpx;
+}
+
+.h10{
+	height: 10rpx;
+}
+
+.h20{
+	height: 20rpx;
+}
+
+.h30{
+	height: 30rpx;
+}
+
+.h40{
+	height: 40rpx;
+}
+
+.h50{
+	height: 50rpx;
+}
+
+.h80{
+	height: 80rpx;
+}
+
+.h100{
+	height: 100rpx;
+}
+
+/**
+ * 登录页input组件
+ */
+.m-input-view {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	height: 90rpx;
+	line-height: 90rpx;
+	padding-top: 18rpx;
+	flex: 1;
+	position: relative;
+}
+.m-input-view::after{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0px;
+		height: 1px;
+		content: '';
+		-webkit-transform: scaleY(.5);
+		-ms-transform: scaleY(.5);
+		transform: scaleY(.5);
+		background-color: #c8c7cc;
+	}
+.m-input-view image{
+	width: 31rpx;
+	height: 33rpx;
+}
+.m-input-view input{
+	flex: 1;
+	width: 100%;
+	padding-left: 20rpx;
+	font-size: 32rpx;
+}
+
+/**
+ * label-input 组件样式
+ */
+.label-input-view{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	flex: 1;
+}
+.label-input-view input{
+	flex: 1;
+	width: 100%;
+	height: 72rpx;
+	line-height: 72rpx;
+	border: 1px solid #c8c7cc;
+	color: rgb(153, 153, 153);
+	background: #FFFFFF;
+	margin-left: 18rpx;
+	font-size: 30rpx;
+	padding-left: 10rpx;
+}
+.label-input-view text{
+	font-size: 30rpx;
+}
+
+/**
+ * 全局组件样式
+ */
+.global-row-view{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1;
+}
+.global-row-view-item{
+	flex: 1;
+}
+.global-column-view{
+	display: flex;
+	flex-direction: column;
+}
+
+.global-label-input{
+	flex: 1;
+	width: 100%;
+	height: 62rpx;
+	line-height: 62rpx;
+	border: 1px solid #c8c7cc;
+	background: #FFFFFF;
+}
+.global-label-inner-width{
+	width: 620rpx;
+}
