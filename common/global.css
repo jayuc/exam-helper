@@ -32,6 +32,20 @@
 }
 
 /**
+ *  app 全局背景颜色
+ */
+uni-page-wrapper{
+	/* background: #f8f8f8; */
+}
+
+/**
+ * 兼容微信小程序
+ */
+page{
+	/* background: #f8f8f8; */
+}
+
+/**
  * 登录页input组件
  */
 .m-input-view {
