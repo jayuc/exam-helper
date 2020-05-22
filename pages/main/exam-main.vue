@@ -25,7 +25,7 @@
 				subjectName: 'Java',
 				sectionName: 'Java基础',
 				questionType: '简单题',
-				questionContent: '面向对象和面向过程的区别',
+				questionContent: '面向对象和面向过程的区别面向对象和面向过程的区别面向对象和面向过程的区别面向对象和面向过程的区别',
 				anwserContent: '这是一个简单的问题',
 				questionIndex: 1,
 				questionTotal: 15,
@@ -83,8 +83,12 @@
 	.exam-main-container{
 		width: 700rpx;
 		margin: 0 auto;
-		font-size: 42rpx;
-		line-height: 72rpx;
+		font-size: 34rpx;
+		line-height: 64rpx;
+		color: #555555;
+	}
+	.exam-main-container .question{
+		color: #808080;
 	}
 	.exam-main-head{
 		position: relative;
