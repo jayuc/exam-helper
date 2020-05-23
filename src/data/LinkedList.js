@@ -38,6 +38,7 @@ class LinkedList{
 			this.tail = el;
 		}
 		this.size++;
+		return el;
 	}
 	
 	// 添加一组元素
@@ -46,6 +47,35 @@ class LinkedList{
 			for(let index in list){
 				this.add(list[index]);
 			}
+		}
+	}
+	
+	// 删除一个元素
+	remove(el){
+		if(el instanceof entry){
+			let prev = el.prev;
+			let next = el.next;
+			if(prev && next){
+				prev.next = next;
+				next.prev = prev;
+				this.size--;
+				el.prev = null;
+				el.next = null;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// 循环
+	foreach(callback){
+		if(typeof callback === 'function'){
+			let e = this.head;
+			while(e !== this.tail){
+				callback(e);
+				e = e.next;
+			}
+			callback(e);
 		}
 	}
 	
