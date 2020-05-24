@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>connection db</title>
+<script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+
+<div style="height: 20px;"></div>
+<div>
+	<button onClick="doQuery()">查询数据</button>
+</div>
+
+</div>
+	
+<script>
+	//根路径
+	const restRoot = '/'; //必须要设计成一个变量
+	function doQuery() {
+		$.ajax({
+			url: restRoot + 'test/query',
+			success: function (result) {
+				console.log(result);
+            }
+		})
+    }
+</script>	
+
+</body>
+</html>
