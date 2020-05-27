@@ -9,7 +9,7 @@
 
 <div style="height: 20px;"></div>
 <div>
-	<button onClick="doQuery()">查询数据</button>
+	<span class="questionTypeSpan"></span>
 </div>
 
 </div>
@@ -25,6 +25,22 @@
             }
 		})
     }
+
+    // 题型 select
+    doQueryCodeByType(1);
+
+    function doQueryCodeByType(codeType) {
+        return new Promise(function (resove, reject) {
+            $.ajax({
+                url: restRoot + 'code/queryCodeByType',
+                data: {codeType},
+                success: function (result) {
+                    resove(result);
+                }
+            });
+        });
+    }
+
 </script>	
 
 </body>
