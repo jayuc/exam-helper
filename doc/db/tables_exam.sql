@@ -27,8 +27,8 @@ CREATE TABLE `t_code` (
 
 CREATE TABLE `t_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` blob NOT NULL COMMENT '问题描述',
-  `answer` blob NOT NULL COMMENT '答案描述',
+  `question` varchar(1024) NOT NULL COMMENT '问题描述',
+  `answer` varchar(2048) NOT NULL COMMENT '答案描述',
   `question_type` int(8) NOT NULL COMMENT '题型,代码类型：1',
   `section_type` int(8) DEFAULT NULL COMMENT '问题主题,代码类型：2',
   `subject_type` int(8) DEFAULT NULL COMMENT '问题类型,代码类型：3',

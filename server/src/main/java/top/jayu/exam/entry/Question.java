@@ -1,6 +1,7 @@
 package top.jayu.exam.entry;
 
 import lombok.Data;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 

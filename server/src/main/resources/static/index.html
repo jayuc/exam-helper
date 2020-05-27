@@ -2,14 +2,42 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>connection db</title>
+<title>考试宝典</title>
 <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+
+	<style>
+		select{
+			width: 100px;
+			height: 28px;
+		}
+		span{
+			margin-right: 30px;
+		}
+		textarea{
+			width: 600px;
+			vertical-align: top;
+		}
+	</style>
+
 </head>
-<body>
+<body style="padding: 20px">
 
 <div style="height: 20px;"></div>
 <div>
-	<span class="questionTypeSpan"></span>
+	题目类型：<span class="subjectTypeSpan"></span>
+	题型：<span class="questionTypeSpan"></span>
+	编程语言：<span class="languageTypeSpan"></span>
+	题目主题：<span class="sectionTypeSpan"></span>
+</div>
+
+<div style="height: 20px;"></div>
+问题：<textarea rows="4" class="question"></textarea>
+<div style="height: 20px;"></div>
+答案：<textarea rows="20" class="answer"></textarea>
+
+<div style="height: 40px;"></div>
+<div>
+	<button onclick="submit()" style="width: 80px;height: 28px;">提 交</button>
 </div>
 
 </div>
@@ -26,8 +54,59 @@
 		})
     }
 
+    // 题目类型 select
+	createSelect(3, '.subjectTypeSpan', 'subjectType');
     // 题型 select
-    doQueryCodeByType(1);
+    createSelect(1, '.questionTypeSpan', 'questionType');
+    // 编程语言
+	createSelect(4, '.languageTypeSpan', 'languageType');
+	// 题目主题
+	createSelect(2, '.sectionTypeSpan', 'sectionType');
+	
+	// 提交
+	function submit() {
+		let formData = getFormData();
+		$.ajax({
+			url: restRoot + 'question/insert',
+			data: formData,
+			type: 'post',
+			success: function (data) {
+				console.log(data);
+            }
+		});
+    }
+
+	// 创建 select
+	function createSelect(codeType, element, expectClass) {
+	    let selectElement = $('<select class="' + expectClass + '"></select>');
+		doQueryCodeByType(codeType).then((list) => {
+		    for(let index in list){
+		        let item = list[index];
+                selectElement.append($('<option value="' + item.codeNo + '">' + item.codeName + '</option>'));
+			}
+		});
+		$(element).append(selectElement);
+    }
+
+    // 获取表单数据
+	function getFormData() {
+		let formData = {};
+		let selects = $('select');
+		for(let i=0; i<selects.length; i++){
+		    let select = selects[i];
+		    let key = $(select).attr('class');
+		    let value = $(select).val();
+		    formData[key] = value;
+		}
+		let textareas = $('textarea');
+		for(let i=0; i<textareas.length; i++){
+		    let textarea = textareas[i];
+            let key = $(textarea).attr('class');
+            let value = $(textarea).val();
+            formData[key] = value;
+		}
+		return formData;
+    }
 
     function doQueryCodeByType(codeType) {
         return new Promise(function (resove, reject) {
