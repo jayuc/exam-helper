@@ -15,13 +15,6 @@ public class CORSConfiguration extends WebMvcConfigurationSupport {
     SecurityHandler securityHandler;
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry){
-        registry.addViewController( "/" ).setViewName( "forward:/index.html" );
-        registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
-        super.addViewControllers( registry );
-    }
-
-    @Override
     protected void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("*")
