@@ -28,4 +28,9 @@ public class QuestionController {
         return questionMapper.selectAll();
     }
 
+    @GetMapping("/selectById")
+    public Question selectById(int id){
+        return questionMapper.selectById(id);
+    }
+
 }

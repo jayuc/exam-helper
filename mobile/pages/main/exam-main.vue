@@ -11,13 +11,15 @@
 			</view>
 			<view class="h10"></view>
 			<view>
-				<text class="qtColor">答案：</text>{{anwserContent}}
+				<text class="qtColor">答案：</text>{{answerContent}}
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import handler from './handler.js';
+	
 	export default {
 		data() {
 			return {
@@ -25,8 +27,8 @@
 				subjectName: 'Java',
 				sectionName: 'Java基础',
 				questionType: '简单题',
-				questionContent: '面向对象和面向过程的区别面向对象和面向过程的区别面向对象和面向过程的区别面向对象和面向过程的区别',
-				anwserContent: '这是一个简单的问题',
+				questionContent: '面向对象和面向过程的区别</br>面向对象和面向过程的区别面向对象和面向过程的区别面向对象和面向过程的区别',
+				answerContent: '这是一个简单的问题',
 				questionIndex: 1,
 				questionTotal: 15,
 				startData: {},
@@ -39,7 +41,11 @@
 			}
 		},
 		onLoad() {
-			
+			let that = this;
+			// handler.queryOne({id: 6}).then((result) => {
+			// 	that.questionContent = result.question;
+			// 	that.answerContent = result.answer;
+			// });
 		},
 		mounted() {
 			let that = this;
