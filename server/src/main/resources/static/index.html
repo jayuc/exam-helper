@@ -17,6 +17,9 @@
 			width: 600px;
 			vertical-align: top;
 		}
+        .submitTip{
+            font-size: 12px;
+        }
 	</style>
 
 </head>
@@ -37,7 +40,8 @@
 
 <div style="height: 40px;"></div>
 <div>
-	<button onclick="submit()" style="width: 80px;height: 28px;">提 交</button>
+	<button onclick="submit()" class="submitButton" style="width: 80px;height: 28px;">提 交</button>
+    <span class="submitTip"></span>
 </div>
 
 </div>
@@ -66,14 +70,25 @@
 	// 提交
 	function submit() {
 		let formData = getFormData();
-		$.ajax({
-			url: restRoot + 'question/insert',
-			data: formData,
-			type: 'post',
-			success: function (data) {
-				console.log(data);
-            }
-		});
+//		console.log(formData);
+		if(formData.question.length > 0 && formData.answer.length > 0){
+            $('.submitButton').attr('disabled', true);
+            $.ajax({
+                url: restRoot + 'question/insert',
+                data: formData,
+                type: 'post',
+                success: function (data) {
+                    if(data){
+                        success("添加成功了");
+                        $('textarea.question').val('');
+                        $('textarea.answer').val('');
+                        $('.submitButton').attr('disabled', false);
+                    }
+                }
+            });
+        }else {
+            error('问题或答案不能为空');
+        }
     }
 
 	// 创建 select
@@ -118,6 +133,18 @@
                 }
             });
         });
+    }
+    
+    function success(text) {
+        tip(text, {color: 'green'});
+    }
+    
+    function error(text) {
+        tip(text, {color: 'red'});
+    }
+
+    function tip(text, _style) {
+        $('.submitTip').text(text).css(_style);
     }
 
 </script>	
