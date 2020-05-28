@@ -42,10 +42,10 @@
 		},
 		onLoad() {
 			let that = this;
-			// handler.queryOne({id: 6}).then((result) => {
-			// 	that.questionContent = result.question;
-			// 	that.answerContent = result.answer;
-			// });
+			handler.queryOne({id: 5}).then((result) => {
+				that.questionContent = result.question;
+				that.answerContent = result.answer;
+			});
 		},
 		mounted() {
 			let that = this;
