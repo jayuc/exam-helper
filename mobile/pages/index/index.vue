@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="h100"></view>
 		<view class="h80"></view>
-		<navigator url="../main/exam-main">
+		<navigator url="../main/exam-main?questionType=4">
 			<button class="btn" type="primary">答 题</button>
 		</navigator>
 		<view class="h80"></view>

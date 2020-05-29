@@ -21,6 +21,9 @@
 
 <script>
 	import handler from './handler.js';
+	import restUtil from '@/utils/restUtil.js';
+	import LinkedList from '@/src/data/LinkedList.js';
+	import resultUtil from '@/utils/resultUtil.js';
 	
 	export default {
 		data() {
@@ -34,7 +37,12 @@
 				questionIndex: 1,
 				questionTotal: 15,
 				startData: {},
-				containerHeight: 300
+				containerHeight: 300,
+				params: {},
+				pageNumber: 1,
+				pageSize: 10,
+				linkList: new LinkedList(),
+				currentNode: null
 			}
 		},
 		computed: {
@@ -42,12 +50,10 @@
 				return "height:" + this.containerHeight + "px";
 			}
 		},
-		onLoad() {
-			let that = this;
-			handler.queryOne({id: 17}).then((result) => {
-				that.questionContent = handler.convertBr(result.question);
-				that.answerContent = handler.convertBr(result.answer);
-			});
+		onLoad(options) {
+			this.params = options;
+			// 刷新
+			this.refresh();
 		},
 		mounted() {
 			let that = this;
@@ -61,6 +67,78 @@
 			})
 		},
 		methods: {
+			// 刷新 
+			// direction: 1表示向前翻页  2表示向后翻页
+			refresh(direction){
+				if(this.linkList.isEmpty()){  // 第一次加载
+					this.fetchData(direction);
+				}else{
+					let _current = this.currentNode;
+					if(direction === 1){   // 向前翻页
+						this.currentNode = this.currentNode.prev;
+						if(this.currentNode){
+							this.refreshContent();
+							this.questionIndex--;
+						}else{  // 已经到最前页
+							this.currentNode = _current;
+						}
+					}else if(direction === 2){   // 向后翻页
+						this.currentNode = this.currentNode.next;
+						console.log(this.currentNode);
+						if(this.currentNode){
+							this.refreshContent();
+							this.questionIndex++;
+						}else{
+							if(this.questionIndex < this.questionTotal){
+								this.pageNumber++;
+								this.fetchData(direction);
+								this.questionIndex++;
+							}else{   // 已到最后一页
+								this.currentNode = _current;
+							}
+						}
+					}
+				}
+			},
+			// 请求数据
+			fetchData(direction){
+				let that = this;
+				restUtil.get({url: 'question/selectSelective', data: that.createParam()})
+					.then((result) => {
+						let list = resultUtil.hasData(result);
+						if(list){
+							that.linkList.addList(list);
+							if(direction && that.currentNode){
+								if(direction === 1){  // 向前翻页
+									that.currentNode = that.currentNode.prev;
+								}else if(direction === 2){  // 向后翻页
+									that.currentNode = that.currentNode.next;
+								}
+							}else{
+								that.currentNode = that.linkList.head;
+							}
+							that.refreshContent();
+							that.questionTotal = result.result.total;
+							console.log(that.linkList);
+						}
+					}, (error) => {
+						
+					})
+			},
+			// 刷新数据到页面
+			refreshContent(){
+				let data = this.currentNode.value;
+				if(data){
+					this.questionContent = handler.convertBr(data.question);
+					this.answerContent = handler.convertBr(data.answer);
+				}
+			},
+			// 获取参数
+			createParam(){
+				this.params.pageSize = this.pageSize;
+				this.params.pageNumber = this.pageNumber;
+				return this.params;
+			},
 			start(e){
 			    this.startData.clientX = e.changedTouches[0].clientX;
 			    this.startData.clientY = e.changedTouches[0].clientY;
@@ -71,12 +149,13 @@
 			    if(subY>50 || subY<-50){
 			        console.log('上下滑')
 			    }else{
-			        if(subX>100){
-			            console.log('右滑')
-			        }else if(subX<-100){
-			            console.log('左滑')
+			        if(subX>100){   // 右滑
+						this.refresh(1);
+			        }else if(subX<-100){  // 左滑
+						this.refresh(2);
 			        }else{
-			            console.log('无效')
+			            console.log('无效');
+						
 			        }
 			    }
 			}
