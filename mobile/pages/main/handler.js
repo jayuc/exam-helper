@@ -7,6 +7,12 @@ const queryOne = (param) => {
 	return restUtil.get({url: 'question/selectById', data: param});
 };
 
+// 把换行符 \n 变成</br>
+const convertBr = (text) => {
+	return text.replace(/(\r\n)|(\n)/g,'<br>');
+};
+
 export default{
-	queryOne
+	queryOne,
+	convertBr
 }

@@ -7,11 +7,13 @@
 		<view class="exam-main-container" :style="containerStyle" @touchstart="start" @touchend="end">
 			<view class="h10"></view>
 			<view class="question">
-				<text class="qtColor">（{{questionType}}）</text> {{questionContent}}?
+				<text class="qtColor">（{{questionType}}）</text>
+				<text v-html="questionContent"></text>
 			</view>
 			<view class="h10"></view>
 			<view>
-				<text class="qtColor">答案：</text>{{answerContent}}
+				<text class="qtColor">答案：</text>
+				<text v-html="answerContent"></text>
 			</view>
 		</view>
 	</view>
@@ -27,8 +29,8 @@
 				subjectName: 'Java',
 				sectionName: 'Java基础',
 				questionType: '简单题',
-				questionContent: '面向对象和面向过程的区别</br>面向对象和面向过程的区别面向对象和面向过程的区别面向对象和面向过程的区别',
-				answerContent: '这是一个简单的问题',
+				questionContent: '',
+				answerContent: '',
 				questionIndex: 1,
 				questionTotal: 15,
 				startData: {},
@@ -42,9 +44,9 @@
 		},
 		onLoad() {
 			let that = this;
-			handler.queryOne({id: 5}).then((result) => {
-				that.questionContent = result.question;
-				that.answerContent = result.answer;
+			handler.queryOne({id: 17}).then((result) => {
+				that.questionContent = handler.convertBr(result.question);
+				that.answerContent = handler.convertBr(result.answer);
 			});
 		},
 		mounted() {
