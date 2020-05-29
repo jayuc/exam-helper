@@ -16,6 +16,7 @@
 				<text v-html="answerContent" v-show="answerVisible"></text>
 			</view>
 		</view>
+		<m-loading v-show="loading"></m-loading>
 	</view>
 </template>
 
@@ -24,8 +25,12 @@
 	import restUtil from '@/utils/restUtil.js';
 	import LinkedList from '@/src/data/LinkedList.js';
 	import resultUtil from '@/utils/resultUtil.js';
+	import mLoading from '@/components/m-loading/m-loading.vue';
 	
 	export default {
+		components: {
+			mLoading
+		},
 		data() {
 			return {
 				exerciseType: '严选题目练习',
@@ -35,6 +40,7 @@
 				questionContent: '',
 				answerContent: '',
 				answerVisible: false,
+				loading: false,      // 正在加载
 				questionIndex: 1,
 				questionTotal: 15,
 				startData: {},
@@ -71,6 +77,9 @@
 			// 刷新 
 			// direction: 1表示向前翻页  2表示向后翻页
 			refresh(direction){
+				if(this.loading){
+					return;
+				}
 				if(this.linkList.isEmpty()){  // 第一次加载
 					this.fetchData(direction);
 				}else{
@@ -105,6 +114,7 @@
 			// 请求数据
 			fetchData(direction){
 				let that = this;
+				that.loading = true;
 				restUtil.get({url: 'question/selectSelective', data: that.createParam()})
 					.then((result) => {
 						let list = resultUtil.hasData(result);
@@ -121,6 +131,7 @@
 							}
 							that.refreshContent();
 							that.questionTotal = result.result.total;
+							that.loading = false;
 						}
 					}, (error) => {
 						
