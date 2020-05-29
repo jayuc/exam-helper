@@ -13,7 +13,7 @@
 			<view class="h10"></view>
 			<view>
 				<text class="qtColor">答案：</text>
-				<text v-html="answerContent"></text>
+				<text v-html="answerContent" v-show="answerVisible"></text>
 			</view>
 		</view>
 	</view>
@@ -34,6 +34,7 @@
 				questionType: '简单题',
 				questionContent: '',
 				answerContent: '',
+				answerVisible: false,
 				questionIndex: 1,
 				questionTotal: 15,
 				startData: {},
@@ -73,19 +74,20 @@
 				if(this.linkList.isEmpty()){  // 第一次加载
 					this.fetchData(direction);
 				}else{
-					let _current = this.currentNode;
+					this.answerVisible = false;
 					if(direction === 1){   // 向前翻页
-						this.currentNode = this.currentNode.prev;
-						if(this.currentNode){
+						let prev = this.currentNode.prev;
+						if(prev){
+							this.currentNode = prev;
 							this.refreshContent();
 							this.questionIndex--;
 						}else{  // 已经到最前页
-							this.currentNode = _current;
+							console.log('已到最前页');
 						}
 					}else if(direction === 2){   // 向后翻页
-						this.currentNode = this.currentNode.next;
-						console.log(this.currentNode);
-						if(this.currentNode){
+						let next = this.currentNode.next;
+						if(next){
+							this.currentNode = next;
 							this.refreshContent();
 							this.questionIndex++;
 						}else{
@@ -94,7 +96,7 @@
 								this.fetchData(direction);
 								this.questionIndex++;
 							}else{   // 已到最后一页
-								this.currentNode = _current;
+								console.log('已到最后一页');
 							}
 						}
 					}
@@ -119,7 +121,6 @@
 							}
 							that.refreshContent();
 							that.questionTotal = result.result.total;
-							console.log(that.linkList);
 						}
 					}, (error) => {
 						
@@ -147,7 +148,11 @@
 			    const subX=e.changedTouches[0].clientX - this.startData.clientX;
 			    const subY=e.changedTouches[0].clientY - this.startData.clientY;
 			    if(subY>50 || subY<-50){
-			        console.log('上下滑')
+			        if(subY > 50){  // 下滑
+						// this.answerVisible = false;
+					}else if(subY < -50){  // 上滑
+						this.answerVisible = true;
+					}
 			    }else{
 			        if(subX>100){   // 右滑
 						this.refresh(1);
@@ -155,7 +160,6 @@
 						this.refresh(2);
 			        }else{
 			            console.log('无效');
-						
 			        }
 			    }
 			}
