@@ -101,7 +101,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-            <!-- 使用： mvn clean package docker:build 或者 mvn clean install docker:build -->
+            <!-- 使用： mvn clean package docker:build docker:push 或者 mvn clean install docker:build docker:push -->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
