@@ -83,7 +83,13 @@
                         $('textarea.question').val('');
                         $('textarea.answer').val('');
                         $('.submitButton').attr('disabled', false);
+                    }else {
+                        error('添加失败了');
                     }
+                },
+                error: function (e) {
+                    error('添加失败了 ==> ' + e.message);
+                    console.error(e);
                 }
             });
         }else {
