@@ -101,6 +101,29 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            <!-- 使用： mvn clean package docker:build 或者 mvn clean install docker:build -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <dockerHost>http://192.168.56.109:2375</dockerHost>
+                    <imageName>192.168.56.109:5000/${project.name}:${project.version}</imageName>
+                    <!-- 基础镜像 -->
+                    <baseImage>java:8</baseImage>
+                    <entryPoint>["java","-jar","/${project.name}.jar"]</entryPoint>
+                    <exposes>5872</exposes>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.name}.jar</include>
+                        </resource>
+                    </resources>
+                    <!-- 强制覆盖 -->
+                    <forceTags> true</forceTags>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
