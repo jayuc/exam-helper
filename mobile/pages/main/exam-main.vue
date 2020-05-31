@@ -160,7 +160,7 @@
 			    const subY=e.changedTouches[0].clientY - this.startData.clientY;
 			    if(subY>50 || subY<-50){
 			        if(subY > 50){  // 下滑
-						// this.answerVisible = false;
+						this.answerVisible = false;
 					}else if(subY < -50){  // 上滑
 						this.answerVisible = true;
 					}
