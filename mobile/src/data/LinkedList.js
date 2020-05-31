@@ -19,7 +19,7 @@ class LinkedList{
 	
 	// 是否为空
 	isEmpty(){
-		if(this.tail){
+		if(this.size > 0){
 			return false;
 		}
 		return true;
@@ -28,7 +28,9 @@ class LinkedList{
 	// 添加一个元素
 	add(value){
 		let el = new entry(value);
+		
 		if(this.isEmpty()){
+			console.log(value);
 			this.head = el;
 			this.tail = this.head;
 		}else{
@@ -37,7 +39,9 @@ class LinkedList{
 			el.prev = tail;
 			this.tail = el;
 		}
+		console.log('----');
 		this.size++;
+		this.initExecute = true;
 		return el;
 	}
 	
