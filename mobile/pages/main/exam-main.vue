@@ -37,8 +37,8 @@
 				subjectName: 'Java',
 				sectionName: 'Java基础',
 				questionType: '简单题',
-				questionContent: '买啥',
-				answerContent: '买好',
+				questionContent: '',
+				answerContent: '',
 				answerVisible: false,
 				loading: false,      // 正在加载
 				questionIndex: 1,
