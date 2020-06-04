@@ -89,6 +89,7 @@
                 },
                 error: function (e) {
                     error('添加失败了 ==> ' + e.message);
+                    $('.submitButton').attr('disabled', false);
                     console.error(e);
                 }
             });
