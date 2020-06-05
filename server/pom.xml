@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>top.jayu</groupId>
 	<artifactId>exam</artifactId>
-	<version>0.1.1</version>
+	<version>1.1.1</version>
 	<name>exam</name>
 	<description></description>
 
@@ -116,8 +116,8 @@
                     <!--</execution>-->
                 <!--</executions>-->
                 <configuration>
-                    <dockerHost>http://121.89.170.193:2375</dockerHost>
-                    <imageName>121.89.170.193:5000/${project.name}:${project.version}</imageName>
+                    <dockerHost>http://192.168.56.109:2375</dockerHost>
+                    <imageName>192.168.56.109:5000/${project.name}:${project.version}</imageName>
                     <!-- 基础镜像 -->
                     <baseImage>java:8</baseImage>
                     <entryPoint>["java","-jar","/${project.name}-${project.version}.jar"]</entryPoint>

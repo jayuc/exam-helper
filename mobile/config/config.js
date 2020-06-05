@@ -9,9 +9,9 @@ var address = null;
 const logLevel = 'info';
 
 // 默认地址
-const defaultAddress = "http://127.0.0.1:5872/";
+// const defaultAddress = "http://127.0.0.1:5872/";
 // 线上版本地址
-// const defaultAddress = "http://jayu.top:5872/";
+const defaultAddress = "http://jayu.top:5872/";
 
 // ip 
 const ip = function(){
