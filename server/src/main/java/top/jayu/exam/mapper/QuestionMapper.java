@@ -35,7 +35,7 @@ public interface QuestionMapper {
                     "<if test='subjectType != null'>and subject_type = #{subjectType} </if>" +
                     "<if test='languageType != null'>and language_type = #{languageType} </if>" +
                     "<if test='ower != null'>and ower = #{ower} </if>" +
-                    "<if test='tag != null'>and tag like '%'||#{tag}||'% </if>" +
+                    "<if test='tag != null'>and tag like CONCAT('%',#{tag},'%') </if>" +
             "</script>"
     )
     List<Question> selectSelective(Question record);

@@ -12,7 +12,13 @@ const convertBr = (text) => {
 	return text.replace(/(\r\n)|(\n)/g,'<br>');
 };
 
+// 修改问题
+const modifyOneQuestion = (param) => {
+	return restUtil.post({url: 'question/update', data: param});
+};
+
 export default{
 	queryOne,
-	convertBr
+	convertBr,
+	modifyOneQuestion
 }

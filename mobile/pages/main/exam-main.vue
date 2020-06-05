@@ -4,7 +4,8 @@
 			{{exerciseType}}（{{sectionName}}）
 			<view class="abs">{{questionIndex}}/{{questionTotal}}</view>
 		</view>
-		<view class="exam-main-container" :style="containerStyle" @touchstart="start" @touchend="end">
+		<view class="exam-main-container" :style="containerStyle" @tap="setFloatInfoShow(true)"
+						@touchstart="start" @touchend="end">
 			<view class="h10"></view>
 			<view class="question">
 				<text class='qtColor'>（{{questionType}}）</text>
@@ -16,6 +17,11 @@
 				<view v-html="createAnswerHtml()" v-if="answerVisible"></view>
 			</view>
 		</view>
+		<icon type="info" class="float_info" v-if="floatInfoShow" @tap="setFloatInfoShow(false)"></icon>
+		<view class="float_container" v-if="!floatInfoShow" >
+			<uni-tag text="重 要" type="primary" inverted class="f_tag" @tap="modifyTag('重要')"></uni-tag>
+			<uni-tag text="今 天" type="success" inverted class="f_tag" @tap="tagCurrentDay"></uni-tag>
+		</view>
 		<m-loading v-if="loading"></m-loading>
 	</view>
 </template>
@@ -26,10 +32,14 @@
 	import LinkedList from '@/src/data/LinkedList.js';
 	import resultUtil from '@/utils/resultUtil.js';
 	import mLoading from '@/components/m-loading/m-loading.vue';
+	import uniTag from "@/unicomponents/uni-tag/uni-tag.vue";
+	import dateUtil from '@/utils/dateUtils.js';
+	import stringUtil from '@/utils/stringUtil.js';
 	
 	export default {
 		components: {
-			mLoading
+			mLoading,
+			uniTag
 		},
 		data() {
 			return {
@@ -41,6 +51,7 @@
 				answerContent: '',
 				answerVisible: false,
 				loading: false,      // 正在加载
+				floatInfoShow: true, // 显示浮动图标
 				questionIndex: 1,
 				questionTotal: 15,
 				startData: {},
@@ -48,7 +59,9 @@
 				params: {},
 				pageNumber: 1,
 				pageSize: 10,
-				linkList: []
+				linkList: [],
+				id: '',       // 问题id
+				tag: ''       // 问题标记
 			}
 		},
 		computed: {
@@ -73,6 +86,29 @@
 			})
 		},
 		methods: {
+			// 标记为当天
+			tagCurrentDay(){
+				this.modifyTag(dateUtil.formatDate(new Date(), 'yyyy-MM-dd'));
+			},
+			// 修改问题标记
+			modifyTag(text){
+				this.loading = true;
+				let that = this;
+				let _tag = text;
+				if(!stringUtil.isBlank(this.tag)){
+					_tag = this.tag + ',' + text;
+				}
+				handler.modifyOneQuestion({id: this.id,tag: _tag})
+					.then((result) => {
+						that.loading = false;
+						that.tag = _tag;
+					}, () => {
+						that.loading = false;
+					});
+			},
+			setFloatInfoShow(show){
+				this.floatInfoShow = show;
+			},
 			// 刷新 
 			// direction: 1表示向前翻页  2表示向后翻页
 			refresh(direction){
@@ -116,8 +152,8 @@
 							}
 							that.refreshContent();
 							that.questionTotal = result.result.total;
-							that.loading = false;
 						}
+						that.loading = false;
 					}, (error) => {
 						that.loading = false;
 					})
@@ -128,6 +164,8 @@
 				if(data){
 					this.questionContent = handler.convertBr(data.question);
 					this.answerContent = handler.convertBr(data.answer);
+					this.id = data.id;
+					this.tag = data.tag;
 					this.answerVisible = false;
 				}
 			},
@@ -215,5 +253,25 @@
 		position: absolute;
 		left: 0;
 		top: 0;
+	}
+	.exam-main-main .float_info{
+		position: fixed;
+		bottom: 30rpx;
+		right: 30rpx;
+	}
+	.exam-main-main .float_container{
+		width: 400rpx;
+		height: 180rpx;
+		padding: 20rpx;
+		background-color: #FFFFFF;
+		position: fixed;
+		bottom: 30rpx;
+		right: 30rpx;
+		border: 1px solid #f3f3f3;
+		border-radius: 14rpx;
+	}
+	.exam-main-main .float_container .f_tag{
+		margin: 5rpx;
+		border-radius: 10rpx;
 	}
 </style>

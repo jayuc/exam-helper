@@ -36,6 +36,7 @@
  */
 uni-page-wrapper{
 	/* background: #f8f8f8; */
+	font-size: 30rpx;
 }
 
 /**
@@ -132,6 +133,7 @@ page{
 	line-height: 62rpx;
 	border: 1px solid #c8c7cc;
 	background: #FFFFFF;
+	font-size: 34rpx;
 }
 .global-label-inner-width{
 	width: 620rpx;
