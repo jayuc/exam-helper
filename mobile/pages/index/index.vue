@@ -6,7 +6,7 @@
 		</view>
 		<view class="h40"></view>
 		<view style="width: 400rpx;" class="global-row-view">
-			<view class="base-label-label">标签：</view>
+			<view class="base-label-label" style="font-size: 30rpx;">标签：</view>
 			<input type="text" v-model="tag" class="global-label-input" style="padding-left: 10rpx;color: #999999;" />
 		</view>
 		<view class="h80"></view>

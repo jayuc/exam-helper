@@ -12,7 +12,7 @@
 	 * Created by Jay
 	 */
 	import commonLabel from '@/components/common-label/index.vue';
-	import handler from './handler.js';
+	import handler from '@/components/code-select/handler.js';
 	
 	export default {
 		components: {

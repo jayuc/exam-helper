@@ -259,8 +259,8 @@
 	}
 	.exam-main-main .float_info{
 		position: fixed;
-		bottom: 30rpx;
-		right: 30rpx;
+		bottom: 40rpx;
+		right: 40rpx;
 	}
 	.exam-main-main .float_container{
 		width: 400rpx;
