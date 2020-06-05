@@ -35,6 +35,7 @@
 	import uniTag from "@/unicomponents/uni-tag/uni-tag.vue";
 	import dateUtil from '@/utils/dateUtils.js';
 	import stringUtil from '@/utils/stringUtil.js';
+	import typeCodeCache from '@/utils/typeCodeCache.js';
 	
 	export default {
 		components: {
@@ -45,15 +46,15 @@
 			return {
 				exerciseType: '严选题目练习',
 				subjectName: 'Java',
-				sectionName: 'Java基础',
-				questionType: '简单题',
+				sectionName: '',
+				questionType: '',
 				questionContent: '',
 				answerContent: '',
 				answerVisible: false,
 				loading: false,      // 正在加载
 				floatInfoShow: true, // 显示浮动图标
 				questionIndex: 1,
-				questionTotal: 15,
+				questionTotal: 0,
 				startData: {},
 				containerHeight: 300,
 				params: {},
@@ -166,6 +167,8 @@
 					this.answerContent = handler.convertBr(data.answer);
 					this.id = data.id;
 					this.tag = data.tag;
+					this.sectionName = typeCodeCache.getCodeName(2, data.sectionType);
+					this.questionType = typeCodeCache.getCodeName(1, data.questionType) + '题';
 					this.answerVisible = false;
 				}
 			},

@@ -24,6 +24,7 @@
 	import fsUtil from '@/utils/fsUtil.js';
 	import codeSelect from '@/components/code-select/index.vue';
 	import dateUtil from '@/utils/dateUtils.js';
+	import typeCodeCache from '@/utils/typeCodeCache.js';
 	
 	export default {
 		components: {
@@ -38,6 +39,8 @@
 		},
 		onLoad() {
 			fsUtil.readJsonFile("/store/subject-type.json");
+			typeCodeCache.storeCode(2);
+			typeCodeCache.storeCode(1);
 		},
 		methods: {
 			selectSectionType(item){
@@ -59,11 +62,22 @@
 			},
 			gotoPage(param){
 				let _url = '../main/exam-main?';
-				if(param.sectionType){
-					_url += 'sectionType=' + param.sectionType + '&';
+				let b = false;
+				for(let index in param){
+					let value = param[index];
+					if(typeof value === 'string' && value.length > 0){
+						_url += index + '=' + value + '&';
+						b = true;
+					}else if(typeof value === 'number' && value > 0){
+						_url += index + '=' + value + '&';
+						b = true;
+					}else if(typeof value === 'boolean'){
+						_url += index + '=' + value + '&';
+						b = true;
+					}
 				}
-				if(param.tag){
-					_url += 'tag=' + param.tag + '&';
+				if(b){
+					_url = _url.substr(0, _url.length - 1);
 				}
 				uni.navigateTo({
 					url: _url
