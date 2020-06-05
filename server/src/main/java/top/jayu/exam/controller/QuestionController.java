@@ -28,6 +28,11 @@ public class QuestionController {
         return result == 1;
     }
 
+    @PostMapping("/update")
+    public boolean update(Question question){
+        return questionMapper.update(question) == 1;
+    }
+
     @GetMapping("/selectAll")
     public List<Question> selectAll(){
         return questionMapper.selectAll();

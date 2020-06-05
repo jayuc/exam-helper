@@ -1,9 +1,6 @@
 package top.jayu.exam.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import top.jayu.exam.entry.Question;
 
 import java.util.List;
@@ -42,5 +39,23 @@ public interface QuestionMapper {
             "</script>"
     )
     List<Question> selectSelective(Question record);
+
+    @Update(
+            "<script>" +
+                    "update t_question " +
+                    "<set>" +
+                        "<if test='question != null'>question = #{question}, </if>" +
+                        "<if test='answer != null'>answer = #{answer}, </if>" +
+                        "<if test='questionType != null'>question_type = #{questionType}, </if>" +
+                        "<if test='sectionType != null'>section_type = #{sectionType}, </if>" +
+                        "<if test='subjectType != null'>subject_type = #{subjectType}, </if>" +
+                        "<if test='languageType != null'>language_type = #{languageType}, </if>" +
+                        "<if test='ower != null'>ower = #{ower}, </if>" +
+                        "<if test='tag != null'>tag = #{tag}, </if>" +
+                    "</set>" +
+                    "where id = #{id}" +
+            "</script>"
+    )
+    int update(Question record);
 
 }

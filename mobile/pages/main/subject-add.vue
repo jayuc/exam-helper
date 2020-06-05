@@ -16,6 +16,7 @@
 <script>
 	import subjectSelect from '@/components/subject-select/index.vue';
 	import mTextarea from '@/components/m-textarea/index.vue';
+	import restUtil from '@/utils/restUtil.js';
 	
 	export default {
 		components: {
@@ -46,6 +47,9 @@
 					answer: this.answer
 				};
 				console.log(param);
+				// restUtil.post({url: 'question/update', data: {id: 17,tag: ''}}).then((result) => {
+				// 	console.log(result);
+				// });
 			}
 		}
 	}

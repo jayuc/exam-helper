@@ -20,6 +20,10 @@
         .submitTip{
             font-size: 12px;
         }
+        .btn{
+            width: 80px;
+            height: 28px;
+        }
 	</style>
 
 </head>
@@ -39,9 +43,10 @@
 答案：<textarea rows="20" class="answer" onfocus="success('')"></textarea>
 
 <div style="height: 40px;"></div>
-<div>
-	<button onclick="submit()" class="submitButton" style="width: 80px;height: 28px;">提 交</button>
+<div style="width: 788px;">
+	<button onclick="submit()" class="submitButton btn" style="">提 交</button>
     <span class="submitTip"></span>
+    <button onclick="clearQuestion()" class="btn" style="float: right;">清 空</button>
 </div>
 
 </div>
@@ -80,8 +85,7 @@
                 success: function (data) {
                     if(data){
                         success("添加成功了");
-                        $('textarea.question').val('');
-                        $('textarea.answer').val('');
+                        clearQuestion();
                         $('.submitButton').attr('disabled', false);
                     }else {
                         error('添加失败了');
@@ -96,6 +100,12 @@
         }else {
             error('问题或答案不能为空');
         }
+    }
+    
+    // 清空题目
+    function clearQuestion() {
+        $('textarea.question').val('');
+        $('textarea.answer').val('');
     }
 
 	// 创建 select
