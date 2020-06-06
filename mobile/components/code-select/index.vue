@@ -47,16 +47,14 @@
 			handleData(arr){
 				let result = [];
 				let that = this;
-				if(arr instanceof Array){
-					for(let index in arr){
-						let item = arr[index];
-						result.push({
-							id: item.codeNo,
-							text: item.codeName
-						});
-						if(that.$props.defaultValue && that.$props.defaultValue === item.codeNo){
-							that.index = index;
-						}
+				for(let index in arr){
+					let item = arr[index];
+					result.push({
+						id: item.codeNo,
+						text: item.codeName
+					});
+					if(that.$props.defaultValue && that.$props.defaultValue === item.codeNo){
+						that.index = index;
 					}
 				}
 				return result;
