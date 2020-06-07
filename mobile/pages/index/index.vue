@@ -7,12 +7,18 @@
 		<view class="h40"></view>
 		<view style="width: 400rpx;" class="global-row-view">
 			<view class="base-label-label" style="font-size: 30rpx;">标签：</view>
-			<input type="text" v-model="tag" class="global-label-input" style="padding-left: 10rpx;color: #999999;" />
+			<input type="text" v-model="tag" 
+					class="global-label-input" 
+					style="padding-left: 10rpx;color: #999999;" 
+					@input="tagInputChange"
+			/>
 		</view>
 		<view class="h80"></view>
-		<button class="btn" type="primary" @tap="doAnser">答 题</button>
+		<button class="btn" type="primary" @tap="doAnser()">顺序答题</button>
 		<view class="h80"></view>
-		<button class="btn" type="primary" @tap="preDayAnswer">昨天问题</button>
+		<button class="btn" type="primary" @tap="continueLast()" :disabled="continueBtnDisabled">继续上次答题</button>
+		<view class="h80"></view>
+		<button class="btn" type="primary" @tap="preDayAnswer()">昨天问题</button>
 		<!-- <view class="h80"></view>
 		<navigator url="../main/subject-add">
 			<button class="btn" type="warn">题目录入</button>
@@ -25,6 +31,7 @@
 	import codeSelect from '@/components/code-select/index.vue';
 	import dateUtil from '@/utils/dateUtils.js';
 	import typeCodeCache from '@/utils/typeCodeCache.js';
+	import stringUtil from '@/utils/stringUtil.js';
 	
 	export default {
 		components: {
@@ -34,7 +41,8 @@
 			return {
 				title: 'Hello',
 				sectionType: 2,
-				tag: ''
+				tag: '',
+				continueBtnDisabled: false
 			}
 		},
 		onLoad() {
@@ -43,14 +51,27 @@
 			typeCodeCache.storeCode(1);
 		},
 		methods: {
+			tagInputChange(){
+				if(stringUtil.isBlank(this.tag)){
+					this.continueBtnDisabled = false;
+				}else{
+					this.continueBtnDisabled = true;
+				}
+			},
 			selectSectionType(item){
 				this.sectionType = item.id;
 			},
-			doAnser(){
+			continueLast(){
+				this.doAnser({useLast:'1'});
+			},
+			doAnser(options){
 				let param = {
 					sectionType: this.sectionType,
 					tag: this.tag
 				};
+				if(options){
+					Object.assign(param, options);
+				}
 				this.gotoPage(param);
 			},
 			preDayAnswer(){

@@ -19,8 +19,20 @@
 		</view>
 		<icon type="info" class="float_info" v-if="floatInfoShow" @tap="setFloatInfoShow(false)"></icon>
 		<view class="float_container" v-if="!floatInfoShow" >
-			<uni-tag text="重 要" type="primary" inverted class="f_tag" @tap="modifyTag('重要')"></uni-tag>
-			<uni-tag text="今 天" type="success" inverted class="f_tag" @tap="tagCurrentDay"></uni-tag>
+			<uni-tag 	text="重 要" 
+						:type="tagDisabled('重要') ? 'default' : 'primary'" 
+						inverted 
+						class="f_tag" 
+						@tap="modifyTag('重要')"
+						:disabled="tagDisabled('重要')"
+			></uni-tag>
+			<uni-tag 	text="今 天" 
+						:type="tagCurrentDayDisabled() ? 'default' : 'success'" 
+						inverted 
+						class="f_tag" 
+						@tap="tagCurrentDay"
+						:disabled="tagCurrentDayDisabled()"
+			></uni-tag>
 		</view>
 		<m-loading v-if="loading"></m-loading>
 	</view>
@@ -53,6 +65,7 @@
 				answerVisible: false,
 				loading: false,      // 正在加载
 				floatInfoShow: true, // 显示浮动图标
+				useLast: false,      // 是否继续上次练习
 				questionIndex: 1,
 				questionTotal: 0,
 				startData: {},
@@ -71,6 +84,9 @@
 			}
 		},
 		onLoad(options) {
+			if(options.useLast == '1'){
+				this.useLast = true;
+			}
 			this.params = options;
 			// 刷新
 			this.refresh();
@@ -87,9 +103,15 @@
 			})
 		},
 		methods: {
+			tagCurrentDayDisabled(){
+				return this.tagDisabled(handler.getCurrentDayStr());
+			},
+			tagDisabled(text){
+				return handler.containStr(this.tag, text);
+			},
 			// 标记为当天
 			tagCurrentDay(){
-				this.modifyTag(dateUtil.formatDate(new Date(), 'yyyy-MM-dd'));
+				this.modifyTag(handler.getCurrentDayStr());
 			},
 			// 修改问题标记
 			modifyTag(text){
@@ -117,7 +139,7 @@
 					return;
 				}
 				if(this.linkList.length === 0){  // 第一次加载
-					this.fetchData(direction);
+					this.fetchData(direction, this.useLast);
 				}else{
 					if(direction === 1){   // 向前翻页
 						if(this.questionIndex < 2){   // 已经到最前页
@@ -125,31 +147,36 @@
 						}else{
 							this.questionIndex--;
 							this.refreshContent();
+							handler.setTheStart(this.params.sectionType, this.questionIndex);
 						}
 					}else if(direction === 2){   // 向后翻页
 						if(this.questionIndex < this.linkList.length){
 							this.questionIndex++;
 							this.refreshContent();
+							handler.setTheStart(this.params.sectionType, this.questionIndex);
 						}else if(this.linkList.length < this.questionTotal){
 							this.pageNumber++;
 							this.fetchData(direction);
 						}else{
+							handler.resetTheStart(this.params.sectionType);
 							console.log('已经到最后一页');
 						}
 					}
 				}
 			},
 			// 请求数据
-			fetchData(direction){
+			// firstLoad: 是否是第一次加载
+			fetchData(direction, firstLoad){
 				let that = this;
 				that.loading = true;
-				restUtil.get({url: 'question/selectSelective', data: that.createParam()})
+				restUtil.get({url: 'question/selectSelective', data: that.createParam(firstLoad)})
 					.then((result) => {
 						let list = resultUtil.hasData(result);
 						if(list){
 							that.linkList = that.linkList.concat(list);
 							if(direction === 2){  // 向后翻页
 								that.questionIndex++;
+								handler.setTheStart(that.params.sectionType, that.questionIndex);
 							}
 							that.refreshContent();
 							that.questionTotal = result.result.total;
@@ -181,9 +208,19 @@
 				return null;
 			},
 			// 获取参数
-			createParam(){
+			createParam(firstLoad){
 				this.params.pageSize = this.pageSize;
 				this.params.pageNumber = this.pageNumber;
+				let pageData = handler.computePageData(firstLoad, this.pageSize,
+							this.pageNumber, this.params.sectionType);
+				if(pageData){
+					this.params.pageSize = pageData.pageSize;
+					this.params.pageNumber = 1;
+					this.questionIndex = pageData.index;
+					if(pageData.pageNumber > 1){
+						this.pageNumber = pageData.pageNumber;
+					}
+				}
 				return this.params;
 			},
 			createQuestionHtml(){
